@@ -1,0 +1,122 @@
+package com.stajyer;
+
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+@Component
+public class VehicleListen {
+
+    private final List<VehicleMessage> vehicleList =
+            new CopyOnWriteArrayList<>();
+
+    private volatile String lastKafkaMessage;
+
+    public List<VehicleMessage> getAllVehicles() {
+        return vehicleList;
+    }
+
+    public VehicleMessage findById(Long id) {
+
+        if (id == null) {
+            return null;
+        }
+
+        for (VehicleMessage vehicle : vehicleList) {
+
+            if (vehicle.getEntityId() != null
+                    && vehicle.getEntityId().equals(id)) {
+
+                return vehicle;
+            }
+        }
+
+        return null;
+    }
+
+    public void addVehicle(VehicleMessage vehicleMessage) {
+
+        if (vehicleMessage == null) {
+            return;
+        }
+
+        vehicleList.add(vehicleMessage);
+    }
+
+    public void addOrUpdateVehicle(VehicleMessage newVehicle) {
+
+        if (newVehicle == null) {
+            return;
+        }
+
+        Long entityId = newVehicle.getEntityId();
+
+        if (entityId == null) {
+            vehicleList.add(newVehicle);
+            return;
+        }
+
+        for (int i = 0; i < vehicleList.size(); i++) {
+
+            VehicleMessage currentVehicle =
+                    vehicleList.get(i);
+
+            if (currentVehicle.getEntityId() != null
+                    && currentVehicle.getEntityId().equals(entityId)) {
+
+                vehicleList.set(i, newVehicle);
+                return;
+            }
+        }
+
+        vehicleList.add(newVehicle);
+    }
+
+    public boolean updateVehicle(
+            Long id,
+            VehicleMessage updatedVehicle
+    ) {
+
+        if (id == null || updatedVehicle == null) {
+            return false;
+        }
+
+        for (int i = 0; i < vehicleList.size(); i++) {
+
+            VehicleMessage currentVehicle =
+                    vehicleList.get(i);
+
+            if (currentVehicle.getEntityId() != null
+                    && currentVehicle.getEntityId().equals(id)) {
+
+                updatedVehicle.setEntityId(id);
+                vehicleList.set(i, updatedVehicle);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean deleteVehicle(Long id) {
+
+        if (id == null) {
+            return false;
+        }
+
+        return vehicleList.removeIf(vehicle ->
+                vehicle.getEntityId() != null
+                        && vehicle.getEntityId().equals(id)
+        );
+    }
+
+    public String getLastKafkaMessage() {
+        return lastKafkaMessage;
+    }
+
+    public void setLastKafkaMessage(String lastKafkaMessage) {
+        this.lastKafkaMessage = lastKafkaMessage;
+    }
+}
