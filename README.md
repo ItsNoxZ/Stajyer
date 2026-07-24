@@ -6,3 +6,20 @@
   <img src="https://img.shields.io/badge/Swagger-OpenAPI%203-blueviolet?style=for-the-badge&logo=swagger&logoColor=white" alt="Swagger">
   <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge" alt="License">
 </p>
+[ Client / Postman / Swagger UI ]
+               │
+               ▼ (HTTP Requests: GET, POST, PUT, DELETE)
+┌──────────────────────────────────────────────┐
+│             VehicleController                │
+└──────┬────────────────────────────────┬──────┘
+       │                                │
+       ▼                                ▼
+┌──────────────────────┐      ┌─────────────────────────┐
+│     VehicleListen    │      │     VehicleProducer     │
+│  (In-Memory Storage) │      │  (Kafka Message Sender) │
+└──────────────────────┘      └───────────┬─────────────┘
+                                          │
+                                          ▼ (JSON Payload)
+                              ┌─────────────────────────>
+                              │     Apache Kafka        │
+                              └─────────────────────────>
