@@ -1,0 +1,216 @@
+package com.stajyer;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectMapper;
+
+
+import java.util.List;
+
+
+@RestController
+@RequestMapping("/vehicle")
+@Tag(
+        name = "🚗 Yusuf Vehicle Management",
+        description = "Vehicle management operations and Kafka monitoring."
+)
+public class VehicleController {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(VehicleController.class);
+
+    private final VehicleProducer vehicleProducer;
+    private final VehicleListen vehicleListen;
+    private final ObjectMapper objectMapper;
+
+    public VehicleController(
+            VehicleProducer vehicleProducer,
+            VehicleListen vehicleListen,
+            ObjectMapper objectMapper
+    ) {
+        this.vehicleProducer = vehicleProducer;
+        this.vehicleListen = vehicleListen;
+        this.objectMapper = objectMapper;
+    }
+    @Operation(
+            summary = "📋 Get All Vehicles",
+            description = "Returns all vehicles received through Kafka or POST requests."
+    )
+    @GetMapping
+    public List<VehicleMessage> getVehicles() {
+
+        log.info("Vehicle list was requested.");
+
+        return vehicleListen.getAllVehicles();
+    }
+
+    @Operation(
+            summary = "🔍 Get Vehicle by ID",
+            description = "Returns a single vehicle using its Entity ID."
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getVehicle(
+            @PathVariable Long id
+    ) {
+
+        VehicleMessage vehicle =
+                vehicleListen.findById(id);
+
+        if (vehicle == null) {
+            return ResponseEntity
+                    .status(404)
+                    .body("Vehicle not found. Entity ID: " + id);
+        }
+
+        return ResponseEntity.ok(vehicle);
+    }
+
+    @Operation(
+            summary = "➕ Add Vehicle",
+            description = "Adds a vehicle and sends it to Kafka."
+    )
+    @PostMapping("/send")
+    public ResponseEntity<String> addVehicle(
+            @RequestBody VehicleMessage vehicleMessage
+    ) {
+
+        try {
+            vehicleListen.addOrUpdateVehicle(vehicleMessage);
+
+            String json =
+                    objectMapper.writeValueAsString(vehicleMessage);
+
+            vehicleProducer.sendMessage(json);
+
+            return ResponseEntity.ok(
+                    "The vehicle was added to the list and sent to Kafka."
+            );
+
+        } catch (Exception e) {
+
+            log.error(
+                    "An error occurred while sending the vehicle: {}",
+                    e.getMessage()
+            );
+
+            return ResponseEntity
+                    .internalServerError()
+                    .body(
+                            "The vehicle could not be converted to JSON: "
+                                    + e.getMessage()
+                    );
+        }
+    }
+
+    @Operation(
+            summary = "📡 Live Kafka Messages",
+            description = "Returns the latest Kafka message."
+    )
+    @GetMapping(
+            value = "/live",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<String> getLatestKafkaVehicle() {
+
+        String message =
+                vehicleListen.getLastKafkaMessage();
+
+        if (message == null || message.isBlank()) {
+
+            return ResponseEntity
+                    .status(404)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("""
+                            {
+                              "message": "Vehicle information could not be received."
+                            }
+                            """);
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(message);
+    }
+
+    @Operation(
+            summary = "✏️ Update Vehicle",
+            description = "Updates an existing vehicle."
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateVehicle(
+            @PathVariable Long id,
+            @RequestBody VehicleMessage updatedVehicle
+    ) {
+
+        boolean updated =
+                vehicleListen.updateVehicle(
+                        id,
+                        updatedVehicle
+                );
+
+        if (!updated) {
+            return ResponseEntity
+                    .status(404)
+                    .body(
+                            "Vehicle not found. Entity ID: "
+                                    + id
+                    );
+        }
+
+        try {
+            String json =
+                    objectMapper.writeValueAsString(updatedVehicle);
+
+            vehicleProducer.sendMessage(json);
+
+            return ResponseEntity.ok(
+                    "The vehicle information was updated and sent to Kafka."
+            );
+
+        } catch (Exception e) {
+
+            log.error(
+                    "The vehicle was updated, but it could not be sent to Kafka: {}",
+                    e.getMessage()
+            );
+
+            return ResponseEntity
+                    .internalServerError()
+                    .body(
+                            "The vehicle was updated, but it could not be sent to Kafka: "
+                                    + e.getMessage()
+                    );
+        }
+    }
+
+    @Operation(
+            summary = "🗑️ Delete Vehicle",
+            description = "Deletes a vehicle by Entity ID."
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteVehicle(
+            @PathVariable Long id
+    ) {
+
+        boolean deleted =
+                vehicleListen.deleteVehicle(id);
+
+        if (!deleted) {
+            return ResponseEntity
+                    .status(404)
+                    .body(
+                            "Vehicle not found. Entity ID: "
+                                    + id
+                    );
+        }
+
+        return ResponseEntity.ok(
+                "The vehicle was deleted successfully."
+        );
+    }
+}
