@@ -38,3 +38,13 @@ SpringDoc OpenAPI (Swagger): API dokümantasyonunun otomatik üretilmesi ve aray
 Jackson (tools.jackson.databind): Java nesneleri ile JSON verileri arasındaki dönüşüm işlemlerini (Serialization/Deserialization) yönetmek için.
 SLF4J & Logback: Uygulama içi loglama ve hata takibi için.
 Maven: Proje bağımlılıklarının ve derleme süreçlerinin yönetimi.
+
+
+# 1. Yapılan değişiklikleri seç
+git add .
+
+# 2. Değişikliğe bir açıklama (mesaj) ekle
+git commit -m "Ufak bir güncelleme eklendi"
+
+# 3. GitHub'a gönder
+git push
