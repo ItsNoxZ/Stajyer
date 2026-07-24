@@ -39,5 +39,17 @@ Jackson (tools.jackson.databind): Java nesneleri ile JSON verileri arasındaki d
 SLF4J & Logback: Uygulama içi loglama ve hata takibi için.
 Maven: Proje bağımlılıklarının ve derleme süreçlerinin yönetimi.
 
+[ 🚗 Araç Takibi: CANLI ]
+--------------------------------------------------
+ID: 1  | Plaka: 06YUS06  | Hız: 120 km/s  | Konum: 39.93, 32.85  [🟢 AKTİF]
+--------------------------------------------------
+Veri Akış Grafiği (Kafka Stream):
+140 km/s |                   ╭╮
+120 km/s |          ╭╮      ││    ╭╮
+100 km/s |    ╭╮    ││  ╭╮  ││  ╭╮││
+ 80 km/s | ───╯╰────╯╰──╯╰──╯╰──╯╰╯╰───
+         +-----------------------------
+           08:32 08:33 08:34 08:35 08:36
+
 
 
