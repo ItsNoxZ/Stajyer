@@ -40,11 +40,4 @@ SLF4J & Logback: Uygulama içi loglama ve hata takibi için.
 Maven: Proje bağımlılıklarının ve derleme süreçlerinin yönetimi.
 
 
-# 1. Yapılan değişiklikleri seç
-git add .
 
-# 2. Değişikliğe bir açıklama (mesaj) ekle
-git commit -m "Ufak bir güncelleme eklendi"
-
-# 3. GitHub'a gönder
-git push
