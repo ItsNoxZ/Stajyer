@@ -1,0 +1,59 @@
+package com.stajyer;
+
+public class VehicleMessage {
+
+    private String entityType;
+    private Long entityId;
+    private String serverName;
+    private String action;
+    private VehicleInfo before;
+    private VehicleInfo after;
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public VehicleInfo getBefore() {
+        return before;
+    }
+
+    public void setBefore(VehicleInfo before) {
+        this.before = before;
+    }
+
+    public VehicleInfo getAfter() {
+        return after;
+    }
+
+    public void setAfter(VehicleInfo after) {
+        this.after = after;
+    }
+}
