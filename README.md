@@ -28,22 +28,16 @@
                               │     Apache Kafka        │
                               └─────────────────────────>
 
-🛠️ Kullanılan Teknolojiler Proje geliştirilirken kullanılan temel dil, kütüphane ve araçlar:
+🛠️ Technologies Used
 
-* Java (17 / 21): Projenin ana programlama dili.
-
-* Spring Boot (3.x): RESTful API'lerin geliştirildiği ve uygulama yönetiminin sağlandığı temel çatı (framework).
-
-* Apache Kafka: Araç verilerinin gerçek zamanlı olarak yayınlanması ve kuyruklanması (Event Streaming) için kullanılan mesajlaşma altyapısı.
-
-* SpringDoc OpenAPI (Swagger): API dokümantasyonunun otomatik üretilmesi, canlı test edilmesi ve arayüze eklenen özel butonlar/özelliklerle (örneğin kayıt ve GitHub 
-yönlendirmeleriyle) zenginleştirilmesi için.
-
-* Jackson (tools.jackson.databind): Java nesneleri ile JSON verileri arasındaki dönüşüm işlemlerini (Serialization/Deserialization) yönetmek için.
-
-* SLF4J & Logback: Uygulama içi loglama ve hata takibi için.
-
-* Maven: Proje bağımlılıklarının ve derleme süreçlerinin yönetimi.
+* The core languages, libraries, and tools used during project development:
+* Java (17 / 21): The primary programming language of the project.
+* Spring Boot (3.x): The core framework used for developing RESTful APIs and managing the application.
+* Apache Kafka: The messaging infrastructure used for real-time publishing and queuing of vehicle data (Event Streaming).
+* SpringDoc OpenAPI (Swagger): Used for automatically generating API documentation, live testing, and enhancing the interface with custom buttons/features (such as registration and GitHub links).
+* Jackson (tools.jackson.databind): Used to manage conversion operations (Serialization/Deserialization) between Java objects and JSON data.
+* SLF4J & Logback: Used for application-level logging and error tracking.
+* Maven: Used for managing project dependencies and build processes.
 
 
 
