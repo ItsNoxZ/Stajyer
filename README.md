@@ -1,3 +1,4 @@
+<img width="250" height="121" alt="auto-0627" src="https://github.com/user-attachments/assets/ef2d10b8-fa8a-4404-b524-00b5db3888a9" />
 <img width="1710" height="958" alt="Ekran Resmi 2026-07-27 17 00 15" src="https://github.com/user-attachments/assets/cd00e16e-0c60-4bd4-b954-66c356fed595" />
 <img width="1710" height="501" alt="Ekran Resmi 2026-07-27 17 00 34" src="https://github.com/user-attachments/assets/e3a3634e-e775-49a1-af1a-70600911b22b" />
 
