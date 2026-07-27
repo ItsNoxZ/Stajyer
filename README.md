@@ -1,4 +1,5 @@
-<img width="250" height="121" alt="auto-0627" src="https://github.com/user-attachments/assets/ef2d10b8-fa8a-4404-b524-00b5db3888a9" />
+<img width="390" height="293" alt="car-driving" src="https://github.com/user-attachments/assets/a07f48be-2426-42a5-88ef-6dbe215f9d09" /><img width="512" height="512" alt="16-10-43-442_512" src="https://github.com/user-attachments/assets/5dc21c96-a21d-4d6d-a6a1-a94d02b275d3" />
+
 <img width="1710" height="958" alt="Ekran Resmi 2026-07-27 17 00 15" src="https://github.com/user-attachments/assets/cd00e16e-0c60-4bd4-b954-66c356fed595" />
 <img width="1710" height="501" alt="Ekran Resmi 2026-07-27 17 00 34" src="https://github.com/user-attachments/assets/e3a3634e-e775-49a1-af1a-70600911b22b" />
 
