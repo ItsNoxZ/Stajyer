@@ -10,16 +10,15 @@
   <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge" alt="License">
 </p>
 
-🛠️ Technologies Used
+🛠️ Technologies & Architectural Stack Used
 
-* The core languages, libraries, and tools used during project development:
-* Java (17 / 21): The primary programming language of the project.
-* Spring Boot (3.x): The core framework used for developing RESTful APIs and managing the application.
-* Apache Kafka: The messaging infrastructure used for real-time publishing and queuing of vehicle data (Event Streaming).
-* SpringDoc OpenAPI (Swagger): Used for automatically generating API documentation, live testing, and enhancing the interface with custom buttons/features (such as registration and GitHub links).
-* Jackson (tools.jackson.databind): Used to manage conversion operations (Serialization/Deserialization) between Java objects and JSON data.
-* SLF4J & Logback: Used for application-level logging and error tracking.
-* Maven: Used for managing project dependencies and build processes.
+* **Java (17 / 21):** The primary programming language powering the entire backend architecture, chosen for its strong typing, high performance, and modern language features.
+* **Spring Boot (3.x):** The core enterprise framework used for building robust RESTful APIs, managing application configuration, and orchestrating dependency injection and lifecycle components.
+* **Apache Kafka:** The high-throughput distributed messaging and event-streaming infrastructure used to asynchronously publish, queue, and stream real-time vehicle telemetry data across distributed services.
+* **SpringDoc OpenAPI (Swagger):** Used for automatically generating interactive API documentation, allowing live endpoint testing, and customized through UI enhancements with direct links for project registration and GitHub repository access.
+* **Jackson (`tools.jackson.databind`):** The core data-processing library utilized to seamlessly manage serialization and deserialization conversions between complex Java domain objects and JSON payloads.
+* **SLF4J & Logback:** The standard logging facade and implementation framework configured for comprehensive application-level auditing, error tracking, and execution tracing.
+* **Maven:** The build automation and project management tool used to handle external library dependencies, plugins, and multi-stage build lifecycles.
 
 ```mermaid
 flowchart TD
