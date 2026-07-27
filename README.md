@@ -10,25 +10,6 @@
   <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge" alt="License">
 </p>
 
-
-[ Client / Postman / Swagger UI ]
-               │
-               ▼ (HTTP Requests: GET, POST, PUT, DELETE)
-┌──────────────────────────────────────────────┐
-│             VehicleController                │
-└──────┬────────────────────────────────┬──────┘
-       │                                │
-       ▼                                ▼
-┌──────────────────────┐      ┌─────────────────────────┐
-│     VehicleListen    │      │     VehicleProducer     │
-│  (In-Memory Storage) │      │  (Kafka Message Sender) │
-└──────────────────────┘      └───────────┬─────────────┘
-                                          │
-                                          ▼ (JSON Payload)
-                              ┌─────────────────────────>
-                              │     Apache Kafka        │
-                              └─────────────────────────>
-
 🛠️ Technologies Used
 
 * The core languages, libraries, and tools used during project development:
