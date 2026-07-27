@@ -1,4 +1,5 @@
-<img width="390" height="293" alt="car-driving" src="https://github.com/user-attachments/assets/b92f0f35-2526-4609-8de8-de1f596ce573" />
+<img width="390" height="293" alt="car-driving" src="https://github.com/user-attachments/assets/b92f0f35-2526-4609-8de8-de1f596ce573" /><img width="512" height="288" alt="02-31-05-285_512" src="https://github.com/user-attachments/assets/f3da3a4a-e5a9-4d4b-a5b6-644c81134b4a" />
+
 
 <img width="1710" height="958" alt="Ekran Resmi 2026-07-27 17 00 15" src="https://github.com/user-attachments/assets/cd00e16e-0c60-4bd4-b954-66c356fed595" />
 <img width="1710" height="501" alt="Ekran Resmi 2026-07-27 17 00 34" src="https://github.com/user-attachments/assets/e3a3634e-e775-49a1-af1a-70600911b22b" />
@@ -27,9 +28,6 @@
 * **SLF4J & Logback:** The standard logging facade and implementation framework configured for comprehensive application-level auditing, error tracking, and execution tracing.
 
 * **Maven:** The build automation and project management tool used to handle external library dependencies, plugins, and multi-stage build lifecycles.
-
-<img width="512" height="512" alt="16-10-43-442_512" src="https://github.com/user-attachments/assets/59050548-2bc1-4b4a-9d04-808fa16251aa" />
-
 
 ```mermaid
 flowchart TD
