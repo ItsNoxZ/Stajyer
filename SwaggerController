@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.info.License;
 
 @Configuration
-public class SwaggerConfig {
+public class İnfoConfig {
 
-    @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
@@ -22,6 +21,7 @@ public class SwaggerConfig {
                                 .email("yusuf@gmail.com"))
                         .license(new License()
                                 .name("Yusuf Şaylık")));
+        
 
     }
 }
