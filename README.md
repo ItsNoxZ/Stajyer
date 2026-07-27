@@ -30,20 +30,20 @@
 
 🛠️ Kullanılan Teknolojiler Proje geliştirilirken kullanılan temel dil, kütüphane ve araçlar:
 
-Java (17 / 21): Projenin ana programlama dili.
+*Java (17 / 21): Projenin ana programlama dili.
 
-Spring Boot (3.x): RESTful API'lerin geliştirildiği ve uygulama yönetiminin sağlandığı temel çatı (framework).
+*Spring Boot (3.x): RESTful API'lerin geliştirildiği ve uygulama yönetiminin sağlandığı temel çatı (framework).
 
-Apache Kafka: Araç verilerinin gerçek zamanlı olarak yayınlanması ve kuyruklanması (Event Streaming) için kullanılan mesajlaşma altyapısı.
+*Apache Kafka: Araç verilerinin gerçek zamanlı olarak yayınlanması ve kuyruklanması (Event Streaming) için kullanılan mesajlaşma altyapısı.
 
-SpringDoc OpenAPI (Swagger): API dokümantasyonunun otomatik üretilmesi, canlı test edilmesi ve arayüze eklenen özel butonlar/özelliklerle (örneğin kayıt ve GitHub 
+*SpringDoc OpenAPI (Swagger): API dokümantasyonunun otomatik üretilmesi, canlı test edilmesi ve arayüze eklenen özel butonlar/özelliklerle (örneğin kayıt ve GitHub 
 yönlendirmeleriyle) zenginleştirilmesi için.
 
-Jackson (tools.jackson.databind): Java nesneleri ile JSON verileri arasındaki dönüşüm işlemlerini (Serialization/Deserialization) yönetmek için.
+*Jackson (tools.jackson.databind): Java nesneleri ile JSON verileri arasındaki dönüşüm işlemlerini (Serialization/Deserialization) yönetmek için.
 
-SLF4J & Logback: Uygulama içi loglama ve hata takibi için.
+*SLF4J & Logback: Uygulama içi loglama ve hata takibi için.
 
-Maven: Proje bağımlılıklarının ve derleme süreçlerinin yönetimi.
+*Maven: Proje bağımlılıklarının ve derleme süreçlerinin yönetimi.
 
 
 
