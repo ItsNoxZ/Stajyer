@@ -22,7 +22,8 @@
 * Maven: Used for managing project dependencies and build processes.
 
 '''mermaid
-flowchart TD
+
+    flowchart TD
     %% Styling
     classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
     classDef controllerStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#2e7d32;
