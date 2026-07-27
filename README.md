@@ -48,7 +48,8 @@ flowchart TD
     classDef storageStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100;
     classDef kafkaStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c;
 
-    flowchart TD
+    ```mermaid
+flowchart TD
     %% Styling
     classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
     classDef controllerStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#2e7d32;
@@ -70,6 +71,5 @@ flowchart TD
     Controller -->|"Publish Vehicle Event"| Producer
     
     Producer -->|"JSON Payload"| Kafka
-
 
 
