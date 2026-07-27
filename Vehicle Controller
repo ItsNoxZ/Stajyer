@@ -1,6 +1,8 @@
 package com.stajyer;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,16 +10,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.ObjectMapper;
-
-
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 @RestController
 @RequestMapping("/vehicle")
 @Tag(
         name = "🚗 Yusuf Vehicle Management",
-        description = "Vehicle management operations and Kafka monitoring."
+        description = "Vehicle management operations, Kafka monitoring, dashboards, and bulk actions."
 )
 public class VehicleController {
 
@@ -37,15 +39,15 @@ public class VehicleController {
         this.vehicleListen = vehicleListen;
         this.objectMapper = objectMapper;
     }
+
     @Operation(
             summary = "📋 Get All Vehicles",
             description = "Returns all vehicles received through Kafka or POST requests."
     )
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of vehicles")
     @GetMapping
     public List<VehicleMessage> getVehicles() {
-
         log.info("Vehicle list was requested.");
-
         return vehicleListen.getAllVehicles();
     }
 
@@ -53,13 +55,15 @@ public class VehicleController {
             summary = "🔍 Get Vehicle by ID",
             description = "Returns a single vehicle using its Entity ID."
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle found"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getVehicle(
             @PathVariable Long id
     ) {
-
-        VehicleMessage vehicle =
-                vehicleListen.findById(id);
+        VehicleMessage vehicle = vehicleListen.findById(id);
 
         if (vehicle == null) {
             return ResponseEntity
@@ -74,17 +78,18 @@ public class VehicleController {
             summary = "➕ Add Vehicle",
             description = "Adds a vehicle and sends it to Kafka."
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle added and sent to Kafka successfully"),
+            @ApiResponse(responseCode = "500", description = "Error converting to JSON or sending to Kafka")
+    })
     @PostMapping("/send")
     public ResponseEntity<String> addVehicle(
             @RequestBody VehicleMessage vehicleMessage
     ) {
-
         try {
             vehicleListen.addOrUpdateVehicle(vehicleMessage);
 
-            String json =
-                    objectMapper.writeValueAsString(vehicleMessage);
-
+            String json = objectMapper.writeValueAsString(vehicleMessage);
             vehicleProducer.sendMessage(json);
 
             return ResponseEntity.ok(
@@ -92,7 +97,6 @@ public class VehicleController {
             );
 
         } catch (Exception e) {
-
             log.error(
                     "An error occurred while sending the vehicle: {}",
                     e.getMessage()
@@ -108,20 +112,48 @@ public class VehicleController {
     }
 
     @Operation(
+            summary = "📦 Add Multiple Vehicles (Bulk)",
+            description = "Adds a list of vehicles in bulk and sends them to Kafka."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles bulk added successfully"),
+            @ApiResponse(responseCode = "500", description = "Error occurred during bulk addition")
+    })
+    @PostMapping("/bulk")
+    public ResponseEntity<String> addMultipleVehicles(
+            @RequestBody List<VehicleMessage> vehicleList
+    ) {
+        try {
+            for (VehicleMessage vehicle : vehicleList) {
+                vehicleListen.addOrUpdateVehicle(vehicle);
+                String json = objectMapper.writeValueAsString(vehicle);
+                vehicleProducer.sendMessage(json);
+            }
+            return ResponseEntity.ok(
+                    vehicleList.size() + " vehicles were successfully added and sent to Kafka."
+            );
+        } catch (Exception e) {
+            log.error("Error during bulk vehicle addition: {}", e.getMessage());
+            return ResponseEntity.internalServerError().body("Bulk addition failed: " + e.getMessage());
+        }
+    }
+
+    @Operation(
             summary = "📡 Live Kafka Messages",
             description = "Returns the latest Kafka message."
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Latest message retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "No message found")
+    })
     @GetMapping(
             value = "/live",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<String> getLatestKafkaVehicle() {
-
-        String message =
-                vehicleListen.getLastKafkaMessage();
+        String message = vehicleListen.getLastKafkaMessage();
 
         if (message == null || message.isBlank()) {
-
             return ResponseEntity
                     .status(404)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -138,34 +170,78 @@ public class VehicleController {
     }
 
     @Operation(
+            summary = "📊 Get System Statistics",
+            description = "Returns total vehicle count and status overview."
+    )
+    @GetMapping("/dashboard/stats")
+    public ResponseEntity<Map<String, Object>> getStats() {
+        int totalVehicles = vehicleListen.getAllVehicles().size();
+
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalVehicles", totalVehicles);
+        stats.put("systemStatus", "RUNNING");
+        stats.put("lastUpdate", LocalDateTime.now());
+
+        return ResponseEntity.ok(stats);
+    }
+
+    @Operation(
+            summary = "⚙️ Check System Health",
+            description = "Returns application status."
+    )
+    @GetMapping("/system/health")
+    public ResponseEntity<String> checkHealth() {
+        return ResponseEntity.ok("Application and Vehicle Service are up and running smoothly!");
+    }
+
+    @Operation(
+            summary = "📄 Export Vehicles as CSV",
+            description = "Downloads vehicle list in CSV format."
+    )
+    @ApiResponse(responseCode = "200", description = "CSV file generated successfully")
+    @GetMapping(value = "/export/csv", produces = "text/csv")
+    public ResponseEntity<String> exportCsv() {
+
+        StringBuilder csvBuilder = new StringBuilder("ID,Brand,Model\n");
+
+        for (VehicleMessage v : vehicleListen.getAllVehicles()) {
+            VehicleInfo info = v.getAfter();
+            if (info != null) {
+                csvBuilder.append(info.getId()).append(",")
+                        .append(info.getBrand()).append(",")
+                        .append(info.getModel()).append("\n");
+            }
+        }
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=vehicles.csv")
+                .body(csvBuilder.toString());
+    }
+
+    @Operation(
             summary = "✏️ Update Vehicle",
             description = "Updates an existing vehicle."
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle updated and sent to Kafka successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found"),
+            @ApiResponse(responseCode = "500", description = "Error sending updated data to Kafka")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<String> updateVehicle(
             @PathVariable Long id,
             @RequestBody VehicleMessage updatedVehicle
     ) {
-
-        boolean updated =
-                vehicleListen.updateVehicle(
-                        id,
-                        updatedVehicle
-                );
+        boolean updated = vehicleListen.updateVehicle(id, updatedVehicle);
 
         if (!updated) {
             return ResponseEntity
                     .status(404)
-                    .body(
-                            "Vehicle not found. Entity ID: "
-                                    + id
-                    );
+                    .body("Vehicle not found. Entity ID: " + id);
         }
 
         try {
-            String json =
-                    objectMapper.writeValueAsString(updatedVehicle);
-
+            String json = objectMapper.writeValueAsString(updatedVehicle);
             vehicleProducer.sendMessage(json);
 
             return ResponseEntity.ok(
@@ -173,7 +249,6 @@ public class VehicleController {
             );
 
         } catch (Exception e) {
-
             log.error(
                     "The vehicle was updated, but it could not be sent to Kafka: {}",
                     e.getMessage()
@@ -192,21 +267,20 @@ public class VehicleController {
             summary = "🗑️ Delete Vehicle",
             description = "Deletes a vehicle by Entity ID."
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteVehicle(
             @PathVariable Long id
     ) {
-
-        boolean deleted =
-                vehicleListen.deleteVehicle(id);
+        boolean deleted = vehicleListen.deleteVehicle(id);
 
         if (!deleted) {
             return ResponseEntity
                     .status(404)
-                    .body(
-                            "Vehicle not found. Entity ID: "
-                                    + id
-                    );
+                    .body("Vehicle not found. Entity ID: " + id);
         }
 
         return ResponseEntity.ok(
