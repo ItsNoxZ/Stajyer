@@ -30,33 +30,33 @@ flowchart TD
     classDef kafkaStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c;
 
     %% Subgraphs for Layers
-    subgraph ClientLayer ["1. İstemci ve Arayüz Katmanı (Client & Swagger UI)"]
-        Client["Client / Postman / Swagger UI\n• Özel Kayıt ve Register butonları bulunur\n• GitHub profili ve dokümantasyon linkleri yer alır\n• HTTP istekleri (GET, POST, PUT, DELETE) buradan tetiklenir"]:::clientStyle
+    subgraph ClientLayer ["1. Client & Interface Layer (Client & Swagger UI)"]
+        Client["Client / Postman / Swagger UI\n• Features custom Registration & Register buttons\n• Includes GitHub profile and documentation links\n• Triggers HTTP requests (GET, POST, PUT, DELETE)"]:::clientStyle
     end
 
-    subgraph APILayer ["2. Kontrol ve Yönetim Katmanı (VehicleController)"]
-        Controller["VehicleController\n• İstekleri karşılar ve validasyon yapar\n• Gelen verinin rotasını belirler\n• Sistem sağlık kontrollerini ve toplu işlemleri yönetir"]:::controllerStyle
+    subgraph APILayer ["2. Control & Management Layer (VehicleController)"]
+        Controller["VehicleController\n• Handles incoming requests and performs validation\n• Determines the routing of incoming data\n• Manages system health checks and bulk operations"]:::controllerStyle
     end
 
-    subgraph BranchLayer ["3. İşlem Yönlendirme ve Karar Mekanizması"]
-        Branch{"İsteğin / Verinin\nYönü Nedir?"}:::controllerStyle
+    subgraph BranchLayer ["3. Request Routing & Decision Mechanism"]
+        Branch{"What is the Direction\nof the Request/Data?"}:::controllerStyle
     end
 
-    subgraph BusinessLayer ["4. İş ve Veri İşleme Katmanı (Business & Data)"]
-        Listener["VehicleListen (In-Memory)\n• Verileri geçici olarak bellek içinde saklar\n• Anlık veri listeleme ve okuma işlemlerini yönetir"]:::storageStyle
-        Producer["VehicleProducer (Kafka Sender)\n• Veriyi JSON formatına dönüştürür\n• Kafka kuyruğuna iletmek üzere event hazırlar"]:::kafkaStyle
+    subgraph BusinessLayer ["4. Business & Data Processing Layer"]
+        Listener["VehicleListen (In-Memory)\n• Temporarily stores data in memory\n• Manages real-time data listing and retrieval operations"]:::storageStyle
+        Producer["VehicleProducer (Kafka Sender)\n• Converts data into JSON format\n• Prepares events to be forwarded to the Kafka queue"]:::kafkaStyle
     end
 
-    subgraph MessagingLayer ["5. Olay Akış Katmanı (Event Streaming)"]
-        Kafka["Apache Kafka\n• Araç verilerini gerçek zamanlı yayınlar\n• Mesaj kuyruklama ve akış yönetimini sağlar"]:::kafkaStyle
+    subgraph MessagingLayer ["5. Event Streaming Layer"]
+        Kafka["Apache Kafka\n• Publishes vehicle data in real-time\n• Provides message queuing and stream management"]:::kafkaStyle
     end
 
     %% Connections & Flow Explanation
-    Client -->|"Adım 1: HTTP İstekleri ve Swagger Arayüz Aksiyonları ile tetiklenir"| Controller
+    Client -->|"Step 1: Triggered via HTTP Requests and Swagger UI actions"| Controller
     
-    Controller -->|"Adım 2: Gelen istek validasyondan geçerek kontrol edilir"| Branch
+    Controller -->|"Step 2: Incoming request is validated and checked"| Branch
     
-    Branch -->|"Senkron Yol: Veriyi saklama veya okuma"| Listener
-    Branch -->|"Asenkron Yol: Event tetikleme"| Producer
+    Branch -->|"Synchronous Path: Store or read data"| Listener
+    Branch -->|"Asynchronous Path: Trigger event"| Producer
     
-    Producer -->|"Adım 3: JSON Payload formatında mesaj kuyruğa aktarılır"| Kafka
+    Producer -->|"Step 3: Messages are forwarded to the queue in JSON Payload format"| Kafka
