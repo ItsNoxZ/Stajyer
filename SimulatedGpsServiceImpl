@@ -1,0 +1,22 @@
+package com.stajyer;
+
+import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.concurrent.ThreadLocalRandom;
+
+@Service
+public class SimulatedGpsServiceImpl implements GpsService {
+
+    @Override
+    public GpsLocationMessage getLatestLocation(Long vehicleId) {
+        GpsLocationMessage gps = new GpsLocationMessage();
+        gps.setVehicleId(vehicleId);
+
+        gps.setLatitude(39.9000 + (ThreadLocalRandom.current().nextDouble() * 0.1));
+        gps.setLongitude(32.8000 + (ThreadLocalRandom.current().nextDouble() * 0.1));
+        gps.setSpeed(ThreadLocalRandom.current().nextDouble() * 120.0);
+        gps.setTimestamp(LocalDateTime.now());
+
+        return gps;
+    }
+}
