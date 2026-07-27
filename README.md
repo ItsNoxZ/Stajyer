@@ -1,5 +1,4 @@
-<img width="1529" height="871"  src="<img width="1458" height="967" alt="Ekran Resmi 2026-07-27 13 09 28" src="https://github.com/user-attachments/assets/7002f172-c1f6-45d9-9c83-f05fa466baee" />
-" />
+<img width="1458" height="967" alt="Ekran Resmi 2026-07-27 13 09 28" src="https://github.com/user-attachments/assets/18dbf993-8141-4c85-8cde-b457fdac3bb1" />
 
 
 <p align="center">
