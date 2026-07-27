@@ -41,14 +41,7 @@
 * Maven: Used for managing project dependencies and build processes.
 
 
-flowchart TD
-    %% Styling
-    classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
-    classDef controllerStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#2e7d32;
-    classDef storageStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100;
-    classDef kafkaStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c;
-
-    ```mermaid
+```mermaid
 flowchart TD
     %% Styling
     classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
@@ -69,6 +62,8 @@ flowchart TD
     
     Controller -->|"Store / Retrieve Data"| Listener
     Controller -->|"Publish Vehicle Event"| Producer
+    
+    Producer -->|"JSON Payload"| Kafka
     
     Producer -->|"JSON Payload"| Kafka
 
