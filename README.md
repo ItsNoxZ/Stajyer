@@ -31,18 +31,27 @@ flowchart TD
     classDef kafkaStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c;
 
     %% Nodes
-    Client["Client / Postman / Swagger UI"]:::clientStyle
-    Controller["VehicleController\n(REST API Endpoints)"]:::controllerStyle
-    
-    Listener["VehicleListen\n(In-Memory Storage)"]:::storageStyle
-    Producer["VehicleProducer\n(Kafka Message Sender)"]:::kafkaStyle
-    Kafka["Apache Kafka\n(Event Streaming)"]:::kafkaStyle
+    subgraph ClientLayer ["Client & Interface Layer"]
+        Client["Client / Postman / Swagger UI\n• Custom Registration & Register Buttons\n• GitHub Profile & Documentation Links\n• Interactive API Testing"]:::clientStyle
+    end
 
-    %% Flow
-    Client -->|"HTTP Requests (GET, POST, PUT, DELETE)"| Controller
-    
-    Controller -->|"Store / Retrieve Data"| Listener
-    Controller -->|"Publish Vehicle Event"| Producer
-    
-    Producer -->|"JSON Payload"| Kafka
+    subgraph APILayer ["Presentation & Controller Layer"]
+        Controller["VehicleController\n• REST API Endpoints\n• Request Validation & Routing\n• Health Checks & Bulk Operations"]:::controllerStyle
+    end
 
+    subgraph BusinessLayer ["Business & Data Processing Layer"]
+        Listener["VehicleListen\n• In-Memory Storage Management\n• Local Data Caching & Retrieval"]:::storageStyle
+        Producer["VehicleProducer\n• Kafka Message Sender\n• Event Serialization"]:::kafkaStyle
+    end
+
+    subgraph MessagingLayer ["Event Streaming Layer"]
+        Kafka["Apache Kafka\n• Real-time Data Publishing\n• Message Queuing & Streaming"]:::kafkaStyle
+    end
+
+    %% Flow Connections
+    Client -->|"HTTP Requests (GET, POST, PUT, DELETE)\n& Swagger UI UI Actions"| Controller
+    
+    Controller -->|"Sync: Store, Fetch, & Manage Data"| Listener
+    Controller -->|"Async: Publish Vehicle Events"| Producer
+    
+    Producer -->|"JSON Payload / Event Streams"| Kafka
