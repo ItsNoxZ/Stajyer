@@ -31,7 +31,7 @@ flowchart TD
     classDef kafkaStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c;
 
     %% Nodes
-    Client["Client / Postman / Swagger UI"]:::clientStyle
+    Client["Client / Postman / Swagger UI\n(Custom Buttons & Endpoints)"]:::clientStyle
     Controller["VehicleController\n(REST API Endpoints)"]:::controllerStyle
     
     Listener["VehicleListen\n(In-Memory Storage)"]:::storageStyle
@@ -39,12 +39,10 @@ flowchart TD
     Kafka["Apache Kafka\n(Event Streaming)"]:::kafkaStyle
 
     %% Flow
-    Client -->|"HTTP Requests (GET, POST, PUT, DELETE)"| Controller
+    Client -->|"HTTP Requests & Swagger Actions"| Controller
     
     Controller -->|"Store / Retrieve Data"| Listener
     Controller -->|"Publish Vehicle Event"| Producer
-    
-    Producer -->|"JSON Payload"| Kafka
     
     Producer -->|"JSON Payload"| Kafka
 
