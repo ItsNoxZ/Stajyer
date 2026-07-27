@@ -28,6 +28,9 @@
 
 * **Maven:** The build automation and project management tool used to handle external library dependencies, plugins, and multi-stage build lifecycles.
 
+<img width="512" height="512" alt="16-10-43-442_512" src="https://github.com/user-attachments/assets/59050548-2bc1-4b4a-9d04-808fa16251aa" />
+
+
 ```mermaid
 flowchart TD
     %% Styling
