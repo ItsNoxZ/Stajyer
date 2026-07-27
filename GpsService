@@ -1,0 +1,5 @@
+package com.stajyer;
+
+public interface GpsService {
+    GpsLocationMessage getLatestLocation(Long vehicleId);
+}
