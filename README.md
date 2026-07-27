@@ -21,7 +21,8 @@
 * SLF4J & Logback: Used for application-level logging and error tracking.
 * Maven: Used for managing project dependencies and build processes.
 
-```mermaid
+```mermaid'''
+
 flowchart TD
     %% Styling
     classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
@@ -54,3 +55,40 @@ flowchart TD
     Controller -->|"Async: Publish Vehicle Events"| Producer
     
     Producer -->|"JSON Payload / Event Streams"| Kafka
+
+flowchart TD
+    %% Styling
+    classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
+    classDef controllerStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#2e7d32;
+    classDef storageStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100;
+    classDef kafkaStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c;
+
+    %% Nodes
+    subgraph ClientLayer ["Client & Interface Layer"]
+        Client["Client / Postman / Swagger UI\n• Custom Registration & Register Buttons\n• GitHub Profile & Documentation Links\n• Interactive API Testing"]:::clientStyle
+    end
+
+    subgraph APILayer ["Presentation & Controller Layer"]
+        Controller["VehicleController\n• REST API Endpoints\n• Request Validation & Routing\n• Health Checks & Bulk Operations"]:::controllerStyle
+    end
+
+    subgraph BusinessLayer ["Business & Data Processing Layer"]
+        Listener["VehicleListen\n• In-Memory Storage Management\n• Local Data Caching & Retrieval"]:::storageStyle
+        Producer["VehicleProducer\n• Kafka Message Sender\n• Event Serialization"]:::kafkaStyle
+    end
+
+    subgraph MessagingLayer ["Event Streaming Layer"]
+        Kafka["Apache Kafka\n• Real-time Data Publishing\n• Message Queuing & Streaming"]:::kafkaStyle
+    end
+
+    %% Flow Connections
+    Client -->|"HTTP Requests (GET, POST, PUT, DELETE)\n& Swagger UI UI Actions"| Controller
+    
+    Controller -->|"Sync: Store, Fetch, & Manage Data"| Listener
+    Controller -->|"Async: Publish Vehicle Events"| Producer
+    
+    Producer -->|"JSON Payload / Event Streams"| Kafka
+
+
+
+
